@@ -10,22 +10,28 @@
   "theme_color": "#FF7043",
   "icons": [
     {
+      "src": "icons/anipet_icon_circular_192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
       "src": "icons/anipet_icon_192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "maskable"
     },
     {
-      "src": "icons/anipet_icon.png",
-      "sizes": "406x406",
+      "src": "icons/anipet_icon_circular.png",
+      "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "icons/anipet_icon_512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "maskable"
     }
   ],
   "categories": ["entertainment", "education"],

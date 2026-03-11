@@ -51,7 +51,7 @@ export const CHARACTERS = [
         rows:       4,
         frameCount: 16,
         fps:        12,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'sad',
@@ -62,7 +62,7 @@ export const CHARACTERS = [
         rows:       4,
         frameCount: 16,
         fps:        6,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'confused',
@@ -73,7 +73,7 @@ export const CHARACTERS = [
         rows:       4,
         frameCount: 16,
         fps:        8,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'walking',
@@ -84,7 +84,7 @@ export const CHARACTERS = [
         rows:       4,
         frameCount: 16,
         fps:        12,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'jumping',
@@ -95,7 +95,7 @@ export const CHARACTERS = [
         rows:       4,
         frameCount: 16,
         fps:        10,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'sleepy',
@@ -106,7 +106,7 @@ export const CHARACTERS = [
         rows:       4,
         frameCount: 16,
         fps:        5,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'playing',
@@ -117,7 +117,7 @@ export const CHARACTERS = [
         rows:       4,
         frameCount: 16,
         fps:        12,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'walkin',
@@ -160,7 +160,7 @@ export const CHARACTERS = [
         rows:       2,
         frameCount: 8,
         fps:        12,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'sad',
@@ -171,7 +171,7 @@ export const CHARACTERS = [
         rows:       2,
         frameCount: 10,
         fps:        6,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'confused',
@@ -182,7 +182,7 @@ export const CHARACTERS = [
         rows:       2,
         frameCount: 10,
         fps:        8,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'walking',
@@ -193,7 +193,7 @@ export const CHARACTERS = [
         rows:       2,
         frameCount: 10,
         fps:        12,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'jumping',
@@ -204,7 +204,7 @@ export const CHARACTERS = [
         rows:       2,
         frameCount: 8,
         fps:        10,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'sleepy',
@@ -215,7 +215,7 @@ export const CHARACTERS = [
         rows:       2,
         frameCount: 10,
         fps:        4,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'playing',
@@ -226,7 +226,7 @@ export const CHARACTERS = [
         rows:       2,
         frameCount: 8,
         fps:        10,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'walkin',
@@ -269,7 +269,7 @@ export const CHARACTERS = [
         rows:       2,
         frameCount: 10,
         fps:        12,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'sad',
@@ -280,7 +280,7 @@ export const CHARACTERS = [
         rows:       2,
         frameCount: 6,
         fps:        5,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'confused',
@@ -291,7 +291,7 @@ export const CHARACTERS = [
         rows:       2,
         frameCount: 10,
         fps:        8,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'walking',
@@ -302,7 +302,7 @@ export const CHARACTERS = [
         rows:       3,
         frameCount: 12,
         fps:        12,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'jumping',
@@ -313,7 +313,7 @@ export const CHARACTERS = [
         rows:       2,
         frameCount: 10,
         fps:        10,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'sleepy',
@@ -324,7 +324,7 @@ export const CHARACTERS = [
         rows:       2,
         frameCount: 10,
         fps:        4,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'playing',
@@ -335,7 +335,7 @@ export const CHARACTERS = [
         rows:       2,
         frameCount: 8,
         fps:        10,
-        loop:       true,
+        loop:       false,
       },
       {
         id:         'walkin',

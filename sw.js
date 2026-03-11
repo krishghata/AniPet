@@ -2,7 +2,7 @@
    AniPet Service Worker — Cache-First Strategy
    ═══════════════════════════════════════════════════════════════ */
 
-const CACHE_NAME = 'anipet-v6';
+const CACHE_NAME = 'anipet-v8';
 
 const PRECACHE_URLS = [
   './',
@@ -22,6 +22,8 @@ const PRECACHE_URLS = [
   './icons/anipet_icon.png',
   './icons/anipet_icon_192.png',
   './icons/anipet_icon_512.png',
+  './icons/anipet_icon_circular.png',
+  './icons/anipet_icon_circular_192.png',
   // Dog sprites
   './assets/sprites/dog/dog_idle.png',
   './assets/sprites/dog/dog_happy.png',
