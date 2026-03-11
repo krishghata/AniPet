@@ -2,7 +2,7 @@
    AniPet Service Worker — Cache-First Strategy
    ═══════════════════════════════════════════════════════════════ */
 
-const CACHE_NAME = 'anipet-v5';
+const CACHE_NAME = 'anipet-v6';
 
 const PRECACHE_URLS = [
   './',
@@ -12,9 +12,13 @@ const PRECACHE_URLS = [
   './js/app.js',
   './js/characters.js',
   './js/animEngine.js',
+  './js/audioEngine.js',
   './js/router.js',
   './js/gridView.js',
   './js/detailView.js',
+  './assets/audio/dog_bark.mp3',
+  './assets/audio/cat_meow.mp3',
+  './assets/audio/duck_quack.mp3',
   './icons/anipet_icon.png',
   './icons/anipet_icon_192.png',
   './icons/anipet_icon_512.png',
