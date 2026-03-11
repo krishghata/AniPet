@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="theme-color" content="#FF7043" />
+  <meta name="description" content="AniPet — Watch your favourite animal friends dance and play!" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="AniPet" />
+  <title>AniPet 🐾</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/anipet_icon.png" />
+  <link rel="icon" href="icons/anipet_icon.png" type="image/png" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- ── Header ── -->
+    <header id="site-header">
+      <button id="back-btn" hidden aria-label="Back to all pets">
+        <span class="back-arrow">&#8592;</span>
+        <span class="back-text">Back</span>
+      </button>
+      <div id="logo" aria-label="AniPet home">
+        <img class="logo-icon" src="icons/anipet_icon.png" alt="AniPet" />
+        <span class="logo-text">AniPet</span>
+      </div>
+      <button id="mute-btn" aria-label="Toggle sound" title="Toggle sound">🔊</button>
+    </header>
+
+    <!-- ── Main view mount point ── -->
+    <main id="view-root" role="main" aria-live="polite"></main>
+
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
