@@ -9,7 +9,7 @@ import { mount as mountDetail, unmount as unmountDetail } from './detailView.js'
 import { CHARACTER_MAP } from './characters.js';
 import { initAudio, setMuted, isMuted } from './audioEngine.js';
 
-const APP_VERSION = 'v1.0.2';
+const APP_VERSION = 'v1.0.3';
 
 const viewRoot = document.getElementById('view-root');
 const backBtn  = document.getElementById('back-btn');

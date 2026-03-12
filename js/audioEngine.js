@@ -22,7 +22,6 @@ export function initAudio() {
     return;
   }
   ctx = new (window.AudioContext || window.webkitAudioContext)();
-  ctx.resume(); // some browsers start suspended
 
   masterGain = ctx.createGain();
   masterGain.gain.value = muted ? 0 : 1;
@@ -36,7 +35,8 @@ export function initAudio() {
   sfxGain.gain.value = 0.9;
   sfxGain.connect(masterGain);
 
-  startBgMusic();
+  // Wait for context to actually be running before scheduling notes
+  ctx.resume().then(() => { if (!muted) startBgMusic(); });
 
   // Preload character audio files in background (after a short delay)
   setTimeout(() => Object.keys(AUDIO_FILES).forEach(id => loadAudioFile(id)), 500);
@@ -48,8 +48,7 @@ export function initAudio() {
       ctx.suspend();
       stopBgMusic();
     } else {
-      ctx.resume();
-      if (!muted) startBgMusic();
+      ctx.resume().then(() => { if (!muted) startBgMusic(); });
     }
   });
 }
