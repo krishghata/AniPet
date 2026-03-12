@@ -417,12 +417,10 @@ body {
   left: 8px;
   font-size: 11px;
   color: rgba(0,0,0,0.5);
-  pointer-events: auto;   /* needs pointer events for long-press */
+  pointer-events: none;
   z-index: 10;
   font-family: monospace;
   line-height: 1;
-  user-select: none;
-  -webkit-user-select: none;
 }
 
 /* ═══════════════════════════════════

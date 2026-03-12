@@ -15,13 +15,14 @@ let locked = false;
 export function isLocked() { return locked; }
 
 export function initChildLock(versionEl) {
-  // Long-press (2 s) on version badge → parent panel
+  // Long-press logo (2 s) → parent panel
+  // touchstart + preventDefault stops Google Assistant / context menu firing
   let pressTimer = null;
-  versionEl.style.cursor = 'default';
-  versionEl.addEventListener('pointerdown', () => {
+  versionEl.addEventListener('touchstart', e => {
+    e.preventDefault();
     pressTimer = setTimeout(openParentPanel, 2000);
-  });
-  ['pointerup', 'pointerleave', 'pointermove'].forEach(ev =>
+  }, { passive: false });
+  ['touchend', 'touchcancel', 'touchmove'].forEach(ev =>
     versionEl.addEventListener(ev, () => clearTimeout(pressTimer))
   );
 
