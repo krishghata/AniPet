@@ -415,8 +415,8 @@ body {
   position: fixed;
   bottom: 6px;
   left: 8px;
-  font-size: 10px;
-  color: rgba(0,0,0,0.25);
+  font-size: 11px;
+  color: rgba(0,0,0,0.5);
   pointer-events: none;
   z-index: 10;
   font-family: monospace;

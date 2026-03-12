@@ -2,7 +2,7 @@
    AniPet Service Worker — Cache-First Strategy
    ═══════════════════════════════════════════════════════════════ */
 
-const CACHE_NAME = 'anipet-v9';
+const CACHE_NAME = 'anipet-v10';
 
 const PRECACHE_URLS = [
   './',
