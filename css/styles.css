@@ -65,14 +65,33 @@ body {
   gap: 8px;
   cursor: pointer;
   text-decoration: none;
+  /* button reset */
+  background: transparent;
+  border: none;
+  padding: 0;
+  /* prevent text selection and image-save callout on long-press */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
-.logo-icon { width: 36px; height: 36px; object-fit: contain; flex-shrink: 0; }
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
+  /* block image-save dialog on Android long-press */
+  -webkit-touch-callout: none;
+  pointer-events: none;
+}
 .logo-text  {
   font-size: 1.8rem;
   font-weight: 900;
   letter-spacing: 1px;
   color: #FFFFFF;
   text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
 }
 
 #back-btn {
