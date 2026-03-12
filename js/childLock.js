@@ -3,7 +3,7 @@
    • History loop  — back button stays inside the app
    • Fullscreen    — hides system UI; reclaims if dismissed
    • PIN unlock    — 4-digit PIN set by parent
-   • Access        — long-press version badge (2 s) → parent panel
+   • Access        — long-press AniPet logo (2 s) → parent panel
    ═══════════════════════════════════════════════════════════════ */
 
 const LOCK_KEY = 'anipet-child-lock';
@@ -14,17 +14,31 @@ let locked = false;
 /* ── Public ──────────────────────────────────────────────────── */
 export function isLocked() { return locked; }
 
-export function initChildLock(versionEl) {
+export function initChildLock(logoEl) {
   // Long-press logo (2 s) → parent panel
-  // touchstart + preventDefault stops Google Assistant / context menu firing
+  // passive:true so normal tap-to-navigate still works.
+  // Only cancel on touchmove if finger actually moved >10px (Android micro-drift).
+  // contextmenu listener stops the system long-press popup.
   let pressTimer = null;
-  versionEl.addEventListener('touchstart', e => {
-    e.preventDefault();
+  let startX = 0, startY = 0;
+
+  logoEl.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
     pressTimer = setTimeout(openParentPanel, 2000);
-  }, { passive: false });
-  ['touchend', 'touchcancel', 'touchmove'].forEach(ev =>
-    versionEl.addEventListener(ev, () => clearTimeout(pressTimer))
-  );
+  }, { passive: true });
+
+  logoEl.addEventListener('touchmove', e => {
+    const dx = e.touches[0].clientX - startX;
+    const dy = e.touches[0].clientY - startY;
+    if (Math.sqrt(dx * dx + dy * dy) > 10) clearTimeout(pressTimer);
+  }, { passive: true });
+
+  logoEl.addEventListener('touchend',   () => clearTimeout(pressTimer));
+  logoEl.addEventListener('touchcancel',() => clearTimeout(pressTimer));
+
+  // Block the system context-menu popup that appears on long-press
+  logoEl.addEventListener('contextmenu', e => e.preventDefault());
 
   // Reclaim fullscreen if child dismisses it
   document.addEventListener('fullscreenchange', () => {
