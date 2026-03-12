@@ -22,6 +22,7 @@ export function initAudio() {
     return;
   }
   ctx = new (window.AudioContext || window.webkitAudioContext)();
+  ctx.resume(); // some browsers start suspended
 
   masterGain = ctx.createGain();
   masterGain.gain.value = muted ? 0 : 1;
@@ -39,6 +40,18 @@ export function initAudio() {
 
   // Preload character audio files in background (after a short delay)
   setTimeout(() => Object.keys(AUDIO_FILES).forEach(id => loadAudioFile(id)), 500);
+
+  // Pause audio when app goes to background; resume when it returns
+  document.addEventListener('visibilitychange', () => {
+    if (!ctx) return;
+    if (document.hidden) {
+      ctx.suspend();
+      stopBgMusic();
+    } else {
+      ctx.resume();
+      if (!muted) startBgMusic();
+    }
+  });
 }
 
 /* ── Mute toggle ─────────────────────────────────────────────── */

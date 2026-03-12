@@ -100,12 +100,10 @@ export function mount(container, characterId) {
       loading.style.display = 'none';
     });
 
-    player.onComplete = () => {
-      // One-shot animation finished → switch to idle (no sfx for auto-switch)
-      if (!anim.loop) {
-        playAnim('idle', false);
-      }
-    };
+    // After any non-idle animation finishes one cycle, return to idle silently
+    player.onComplete = animId !== 'idle'
+      ? () => playAnim('idle', false)
+      : null;
   }
 
   // Wire up selector buttons

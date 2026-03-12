@@ -131,6 +131,7 @@ export class AnimPlayer {
       if (this._currentFrame >= cfg.frameCount) {
         if (cfg.loop) {
           this._currentFrame = 0;
+          this.onComplete?.();
         } else {
           // One-shot — hold last frame, fire callback
           this._currentFrame = cfg.frameCount - 1;
