@@ -9,7 +9,7 @@ import { mount as mountDetail, unmount as unmountDetail } from './detailView.js'
 import { CHARACTER_MAP } from './characters.js';
 import { initAudio, setMuted, isMuted } from './audioEngine.js';
 
-const APP_VERSION = 'v1.0.1';
+const APP_VERSION = 'v1.0.2';
 
 const viewRoot = document.getElementById('view-root');
 const backBtn  = document.getElementById('back-btn');
@@ -38,12 +38,16 @@ muteBtn.addEventListener('click', () => {
   updateMuteBtn();
 });
 
-// If user had sound ON from a previous session, auto-start on their first tap anywhere
+// If user had sound ON from a previous session, auto-start on first tap anywhere.
+// Use both touchend and click — pointerdown is not reliably accepted as a user
+// gesture for AudioContext on Android Chrome.
 function maybeAutoStart() {
   if (!isMuted()) startAudioOnce();
-  document.removeEventListener('pointerdown', maybeAutoStart, true);
+  document.removeEventListener('touchend', maybeAutoStart, true);
+  document.removeEventListener('click',    maybeAutoStart, true);
 }
-document.addEventListener('pointerdown', maybeAutoStart, true);
+document.addEventListener('touchend', maybeAutoStart, true);
+document.addEventListener('click',    maybeAutoStart, true);
 
 // Reflect saved mute state on load
 updateMuteBtn();
