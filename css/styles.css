@@ -417,11 +417,160 @@ body {
   left: 8px;
   font-size: 11px;
   color: rgba(0,0,0,0.5);
-  pointer-events: none;
+  pointer-events: auto;   /* needs pointer events for long-press */
   z-index: 10;
   font-family: monospace;
   line-height: 1;
+  user-select: none;
+  -webkit-user-select: none;
 }
+
+/* ═══════════════════════════════════
+   CHILD LOCK
+═══════════════════════════════════ */
+
+/* Lock badge — bottom-right corner */
+#lock-badge {
+  position: fixed;
+  bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+  right: 8px;
+  z-index: 200;
+  background: rgba(0,0,0,0.55);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* Parent panel overlay */
+#parent-panel {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 300;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.pp-box {
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  padding: 28px 24px 32px;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.pp-title {
+  font-family: var(--font);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #333;
+}
+.pp-desc {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+  line-height: 1.4;
+}
+.pp-btn {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 1rem;
+  font-family: var(--font);
+  cursor: pointer;
+}
+.pp-primary  { background: var(--accent); color: #fff; font-weight: 700; }
+.pp-secondary { background: #f0f0f0; color: #333; }
+.pp-close    { background: transparent; color: #999; font-size: 0.9rem; }
+
+/* PIN overlay */
+.pin-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.pin-box {
+  background: #fff;
+  border-radius: 20px;
+  padding: 28px 24px;
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.pin-title {
+  font-family: var(--font);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #333;
+  text-align: center;
+}
+.pin-sub {
+  font-size: 0.85rem;
+  color: #888;
+  text-align: center;
+  margin-top: -8px;
+}
+.pin-dots {
+  display: flex;
+  gap: 14px;
+}
+.pin-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  background: transparent;
+  transition: background 0.15s, border-color 0.15s;
+}
+.pin-dot.filled {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.pin-error-msg {
+  font-size: 0.85rem;
+  color: #e53935;
+  min-height: 1.1em;
+  text-align: center;
+}
+.pin-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+.pin-key {
+  border: none;
+  border-radius: 12px;
+  background: #f5f5f5;
+  font-size: 1.4rem;
+  font-family: var(--font);
+  padding: 14px 0;
+  cursor: pointer;
+  transition: background 0.12s;
+  -webkit-tap-highlight-color: transparent;
+}
+.pin-key:active { background: #e0e0e0; }
+.pin-del    { background: #fff0ee; color: var(--accent); }
+.pin-cancel { background: #fff0ee; color: var(--accent); }
 
 /* ═══════════════════════════════════
    INSTALL BANNER

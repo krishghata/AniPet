@@ -8,8 +8,9 @@ import { mount as mountGrid,   unmount as unmountGrid   } from './gridView.js';
 import { mount as mountDetail, unmount as unmountDetail } from './detailView.js';
 import { CHARACTER_MAP } from './characters.js';
 import { initAudio, setMuted, isMuted } from './audioEngine.js';
+import { initChildLock } from './childLock.js';
 
-const APP_VERSION = 'v1.0.3';
+const APP_VERSION = 'v1.1.0';
 
 const viewRoot = document.getElementById('view-root');
 const backBtn  = document.getElementById('back-btn');
@@ -52,8 +53,10 @@ document.addEventListener('click',    maybeAutoStart, true);
 // Reflect saved mute state on load
 updateMuteBtn();
 
-// Version badge
-document.getElementById('app-version').textContent = APP_VERSION;
+// Version badge + child lock (long-press badge to open parent settings)
+const versionEl = document.getElementById('app-version');
+versionEl.textContent = APP_VERSION;
+initChildLock(versionEl);
 
 /* ── Teardown current view ─────────────────────────────────── */
 function teardown() {
