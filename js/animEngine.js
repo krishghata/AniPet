@@ -3,8 +3,10 @@
    Loads PNG sprite sheets and drives frame-accurate rAF loops.
    ═══════════════════════════════════════════════════════════════ */
 
-/* In-memory cache: key "dog_idle" → Promise<HTMLImageElement> */
+/* In-memory cache: key src → Promise<HTMLImageElement> */
 const imageCache = new Map();
+/* In-memory cache: key jsonSrc → Promise<frames map> */
+const atlasCache = new Map();
 
 /**
  * Load (or return cached) an Image for the given src.
@@ -25,6 +27,38 @@ function loadImage(src) {
   return promise;
 }
 
+/**
+ * Load (or return cached) a Texture Packer JSON atlas.
+ * Returns a Map keyed by animation prefix → sorted array of {x,y,w,h}.
+ * @param {string} src
+ * @returns {Promise<Map<string, Array<{x,y,w,h}>>>}
+ */
+function loadAtlasJson(src) {
+  if (atlasCache.has(src)) return atlasCache.get(src);
+
+  const promise = fetch(src)
+    .then(r => r.json())
+    .then(data => {
+      const map = new Map();
+      for (const [key, val] of Object.entries(data.frames)) {
+        // key format: "idle_sitting_f01" — strip trailing _fNN to get prefix
+        const match = key.match(/^(.+)_f(\d+)$/);
+        if (!match) continue;
+        const prefix = match[1];
+        if (!map.has(prefix)) map.set(prefix, []);
+        map.get(prefix).push({ index: parseInt(match[2], 10), ...val.frame });
+      }
+      // Sort each group by frame index
+      for (const frames of map.values()) {
+        frames.sort((a, b) => a.index - b.index);
+      }
+      return map;
+    });
+
+  atlasCache.set(src, promise);
+  return promise;
+}
+
 /* ═══════════════════════════════════
    AnimPlayer class
 ═══════════════════════════════════ */
@@ -40,6 +74,7 @@ export class AnimPlayer {
 
     this._img          = null;
     this._config       = null;
+    this._atlasFrames  = null;
     this._frameW       = 0;
     this._frameH       = 0;
     this._currentFrame = 0;
@@ -61,17 +96,31 @@ export class AnimPlayer {
   async loadAnim(animConfig, onLoad) {
     // Stop any current playback
     this.stop();
-    this._config = animConfig;
+    this._config       = animConfig;
     this._currentFrame = 0;
+    this._atlasFrames  = null;
 
     // Show placeholder while loading
     this._drawPlaceholder();
 
     try {
-      const img = await loadImage(animConfig.src);
-      this._img    = img;
-      this._frameW = img.naturalWidth  / animConfig.cols;
-      this._frameH = img.naturalHeight / animConfig.rows;
+      if (animConfig.atlasSrc) {
+        // Atlas format: one master PNG + JSON
+        const [img, atlasMap] = await Promise.all([
+          loadImage(animConfig.atlasSrc),
+          loadAtlasJson(animConfig.atlasJsonSrc),
+        ]);
+        this._img         = img;
+        this._atlasFrames = atlasMap.get(animConfig.atlasKey) || [];
+        // Override frameCount with actual atlas frame count
+        this._config = { ...animConfig, frameCount: this._atlasFrames.length };
+      } else {
+        // Legacy grid format
+        const img = await loadImage(animConfig.src);
+        this._img    = img;
+        this._frameW = img.naturalWidth  / animConfig.cols;
+        this._frameH = img.naturalHeight / animConfig.rows;
+      }
       onLoad?.();
       this.play();
     } catch {
@@ -153,21 +202,25 @@ export class AnimPlayer {
   _draw() {
     if (!this._img || !this._config) return;
 
-    const { cols }  = this._config;
-    const frame     = this._currentFrame;
-    const col       = frame % cols;
-    const row       = Math.floor(frame / cols);
-    const sx        = col * this._frameW;
-    const sy        = row * this._frameH;
-
     const { ctx, canvas } = this;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(
-      this._img,
-      sx, sy, this._frameW, this._frameH,   // source rect
-      0,  0,  canvas.width, canvas.height    // dest (fill canvas)
-    );
+
+    if (this._atlasFrames) {
+      // Atlas format — use per-frame {x,y,w,h}
+      const f = this._atlasFrames[this._currentFrame];
+      if (!f) return;
+      ctx.drawImage(this._img, f.x, f.y, f.w, f.h, 0, 0, canvas.width, canvas.height);
+    } else {
+      // Legacy grid format
+      const { cols }  = this._config;
+      const frame     = this._currentFrame;
+      const col       = frame % cols;
+      const row       = Math.floor(frame / cols);
+      const sx        = col * this._frameW;
+      const sy        = row * this._frameH;
+      ctx.drawImage(this._img, sx, sy, this._frameW, this._frameH, 0, 0, canvas.width, canvas.height);
+    }
   }
 
   _drawPlaceholder() {
@@ -189,11 +242,23 @@ export async function drawThumbnail(canvas, animConfig, bgColor = '#FFF9F0') {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   try {
-    const img    = await loadImage(animConfig.src);
-    const frameW = img.naturalWidth  / animConfig.cols;
-    const frameH = img.naturalHeight / animConfig.rows;
     ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(img, 0, 0, frameW, frameH, 0, 0, canvas.width, canvas.height);
+    if (animConfig.atlasSrc) {
+      const [img, atlasMap] = await Promise.all([
+        loadImage(animConfig.atlasSrc),
+        loadAtlasJson(animConfig.atlasJsonSrc),
+      ]);
+      const frames = atlasMap.get(animConfig.atlasKey) || [];
+      if (frames.length) {
+        const f = frames[0];
+        ctx.drawImage(img, f.x, f.y, f.w, f.h, 0, 0, canvas.width, canvas.height);
+      }
+    } else {
+      const img    = await loadImage(animConfig.src);
+      const frameW = img.naturalWidth  / animConfig.cols;
+      const frameH = img.naturalHeight / animConfig.rows;
+      ctx.drawImage(img, 0, 0, frameW, frameH, 0, 0, canvas.width, canvas.height);
+    }
   } catch {
     // Leave placeholder background
   }
@@ -201,8 +266,20 @@ export async function drawThumbnail(canvas, animConfig, bgColor = '#FFF9F0') {
 
 /** Preload all animation images for a character in the background */
 export function preloadCharacter(character) {
+  const seenImg  = new Set();
+  const seenJson = new Set();
   character.animations.forEach(anim => {
-    // Kick off load silently; results are cached for later use
-    loadImage(anim.src).catch(() => {});
+    if (anim.atlasSrc) {
+      if (!seenImg.has(anim.atlasSrc)) {
+        seenImg.add(anim.atlasSrc);
+        loadImage(anim.atlasSrc).catch(() => {});
+      }
+      if (!seenJson.has(anim.atlasJsonSrc)) {
+        seenJson.add(anim.atlasJsonSrc);
+        loadAtlasJson(anim.atlasJsonSrc).catch(() => {});
+      }
+    } else {
+      loadImage(anim.src).catch(() => {});
+    }
   });
 }

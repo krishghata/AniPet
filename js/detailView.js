@@ -51,7 +51,7 @@ export function mount(container, characterId) {
         <p class="anim-selector-title">Choose an animation! 🎬</p>
 
         <div class="anim-selector" id="anim-selector" role="group" aria-label="Animation selector">
-          ${char.animations.map(anim => `
+          ${char.animations.filter(anim => anim.id !== 'idle').map(anim => `
             <button
               class="anim-btn"
               data-anim-id="${anim.id}"

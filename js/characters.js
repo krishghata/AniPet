@@ -4,20 +4,18 @@
 
    HOW TO ADD A CHARACTER:
    1. Add an entry to the CHARACTERS array below.
-   2. Put your sprite sheet PNGs in assets/sprites/{characterId}/
-      Naming convention: {characterId}_{animationId}.png
-      e.g. assets/sprites/dog/dog_idle.png
-           assets/sprites/cat/cat_walking.png
 
-   SPRITE SHEET FORMAT:
-   - PNG file with frames arranged in a grid (rows × columns)
-   - All frames must be the same size
-   - Frame order: left → right, top → bottom
-   - Set cols, rows, and frameCount for each animation.
-     frameCount can be less than cols*rows to skip blank trailing cells.
+   LEGACY SPRITE FORMAT (cat/duck):
+   - One PNG per animation in assets/sprites/{id}/
+   - Per-animation props: src, cols, rows, frameCount, fps, loop
+
+   ATLAS SPRITE FORMAT (dog):
+   - One master PNG + one JSON atlas in assets/sprites/{id}/
+   - Per-animation props: atlasSrc, atlasJsonSrc, atlasKey, fps, loop
+   - JSON uses Texture Packer format: frames keyed "{animKey}_f01", "_f02" …
 
    ANIMATION IDs (standard set):
-     idle | happy | sad | confused | walking | jumping | sleepy | playing | walkin
+     idle | happy | sad | confused | walking | jumping | sleepy | playing | walkin | wave_hi
 
    The "walkin" animation plays once when the detail view opens,
    then automatically switches to "idle". Set loop: false for it.
@@ -32,103 +30,104 @@ export const CHARACTERS = [
     cardColor: '#FFE0B2',    // peach
     animations: [
       {
-        id:         'idle',
-        label:      'Idle',
-        emoji:      '😊',
-        src:        'assets/sprites/dog/dog_idle.png',
-        cols:       4,
-        rows:       4,
-        frameCount: 16,
-        fps:        8,
-        loop:       true,
+        id:           'idle',
+        label:        'Idle',
+        emoji:        '😊',
+        atlasSrc:     'assets/sprites/dog/dog_master.png',
+        atlasJsonSrc: 'assets/sprites/dog/dog_master.json',
+        atlasKey:     'idle_sitting',
+        fps:          8,
+        loop:         true,
       },
       {
-        id:         'happy',
-        label:      'Happy & Excited',
-        emoji:      '🎉',
-        src:        'assets/sprites/dog/dog_happy.png',
-        cols:       4,
-        rows:       4,
-        frameCount: 16,
-        fps:        12,
-        loop:       false,
+        id:           'wave_hi',
+        label:        'Wave Hi',
+        emoji:        '👋',
+        atlasSrc:     'assets/sprites/dog/dog_master.png',
+        atlasJsonSrc: 'assets/sprites/dog/dog_master.json',
+        atlasKey:     'wave_hi',
+        fps:          8,
+        loop:         false,
       },
       {
-        id:         'sad',
-        label:      'Sad',
-        emoji:      '😢',
-        src:        'assets/sprites/dog/dog_sad.png',
-        cols:       4,
-        rows:       4,
-        frameCount: 16,
-        fps:        6,
-        loop:       false,
+        id:           'happy',
+        label:        'Happy & Excited',
+        emoji:        '🎉',
+        atlasSrc:     'assets/sprites/dog/dog_master.png',
+        atlasJsonSrc: 'assets/sprites/dog/dog_master.json',
+        atlasKey:     'happy_excited',
+        fps:          12,
+        loop:         false,
       },
       {
-        id:         'confused',
-        label:      'Confused',
-        emoji:      '😕',
-        src:        'assets/sprites/dog/dog_confused.png',
-        cols:       4,
-        rows:       4,
-        frameCount: 16,
-        fps:        8,
-        loop:       false,
+        id:           'sad',
+        label:        'Sad',
+        emoji:        '😢',
+        atlasSrc:     'assets/sprites/dog/dog_master.png',
+        atlasJsonSrc: 'assets/sprites/dog/dog_master.json',
+        atlasKey:     'sad',
+        fps:          6,
+        loop:         false,
       },
       {
-        id:         'walking',
-        label:      'Walking',
-        emoji:      '🚶',
-        src:        'assets/sprites/dog/dog_walking.png',
-        cols:       4,
-        rows:       4,
-        frameCount: 16,
-        fps:        12,
-        loop:       false,
+        id:           'confused',
+        label:        'Confused',
+        emoji:        '😕',
+        atlasSrc:     'assets/sprites/dog/dog_master.png',
+        atlasJsonSrc: 'assets/sprites/dog/dog_master.json',
+        atlasKey:     'confused',
+        fps:          8,
+        loop:         false,
       },
       {
-        id:         'jumping',
-        label:      'Jumping',
-        emoji:      '🦘',
-        src:        'assets/sprites/dog/dog_jumping.png',
-        cols:       4,
-        rows:       4,
-        frameCount: 16,
-        fps:        10,
-        loop:       false,
+        id:           'walking',
+        label:        'Walking',
+        emoji:        '🚶',
+        atlasSrc:     'assets/sprites/dog/dog_master.png',
+        atlasJsonSrc: 'assets/sprites/dog/dog_master.json',
+        atlasKey:     'walking',
+        fps:          12,
+        loop:         false,
       },
       {
-        id:         'sleepy',
-        label:      'Sleepy',
-        emoji:      '😴',
-        src:        'assets/sprites/dog/dog_sleepy.png',
-        cols:       4,
-        rows:       4,
-        frameCount: 16,
-        fps:        5,
-        loop:       false,
+        id:           'jumping',
+        label:        'Jumping',
+        emoji:        '🦘',
+        atlasSrc:     'assets/sprites/dog/dog_master.png',
+        atlasJsonSrc: 'assets/sprites/dog/dog_master.json',
+        atlasKey:     'jumping',
+        fps:          10,
+        loop:         false,
       },
       {
-        id:         'playing',
-        label:      'Playing',
-        emoji:      '🎾',
-        src:        'assets/sprites/dog/dog_playing.png',
-        cols:       4,
-        rows:       4,
-        frameCount: 16,
-        fps:        12,
-        loop:       false,
+        id:           'sleepy',
+        label:        'Sleepy',
+        emoji:        '😴',
+        atlasSrc:     'assets/sprites/dog/dog_master.png',
+        atlasJsonSrc: 'assets/sprites/dog/dog_master.json',
+        atlasKey:     'sleepy',
+        fps:          5,
+        loop:         false,
       },
       {
-        id:         'walkin',
-        label:      'Walk In',
-        emoji:      '✨',
-        src:        'assets/sprites/dog/dog_walkin.png',
-        cols:       4,
-        rows:       4,
-        frameCount: 16,
-        fps:        12,
-        loop:       false,   // plays once, then switches to idle
+        id:           'playing',
+        label:        'Playing',
+        emoji:        '🎾',
+        atlasSrc:     'assets/sprites/dog/dog_master.png',
+        atlasJsonSrc: 'assets/sprites/dog/dog_master.json',
+        atlasKey:     'playing',
+        fps:          12,
+        loop:         false,
+      },
+      {
+        id:           'walkin',
+        label:        'Walk In',
+        emoji:        '✨',
+        atlasSrc:     'assets/sprites/dog/dog_master.png',
+        atlasJsonSrc: 'assets/sprites/dog/dog_master.json',
+        atlasKey:     'walk_in',
+        fps:          12,
+        loop:         false,   // plays once, then switches to idle
       },
     ],
   },

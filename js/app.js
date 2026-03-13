@@ -10,7 +10,7 @@ import { CHARACTER_MAP } from './characters.js';
 import { initAudio, setMuted, isMuted } from './audioEngine.js';
 import { initChildLock } from './childLock.js';
 
-const APP_VERSION = 'v1.1.2';
+const APP_VERSION = 'v1.1.6';
 
 const viewRoot = document.getElementById('view-root');
 const backBtn  = document.getElementById('back-btn');
